@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carozi - Car Buying & Rental Recommendations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --secondary-color: #333;
+            --accent-color: #FF6B00;
+            --rental-color: #28a745;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --text-color: #495057;
+            --text-light: #6c757d;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 400px;
+            font-size: 14px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #0056b3);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+            animation: fadeInDown 1s ease-in-out;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            margin: 10px 0 0;
+            font-size: 1.1rem;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-in-out;
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        nav {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease, transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+            background-color: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+
+        nav a i {
+            margin-right: 6px;
+            font-size: 0.9rem;
+        }
+
+        section {
+            padding: 40px 20px;
+            margin: 25px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            max-width: 1200px;
+        }
+
+        section h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        section h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        section h3 {
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        section p {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            line-height: 1.7;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        section ul {
+            max-width: 800px;
+            margin: 0 auto 25px;
+            padding-left: 20px;
+            font-size: 0.95rem;
+        }
+
+        section ul li {
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .featured-cars {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .car-card {
+            flex: 1 1 calc(33.333% - 20px);
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: all 0.3s ease, transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            max-width: 300px;
+            cursor: pointer;
+            position: relative;
+            border: 1px solid #eee;
+        }
+
+        .car-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .car-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .car-card:hover img {
+            transform: scale(1.03);
+        }
+
+        .car-card h4 {
+            margin: 15px 0 8px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            padding: 0 12px;
+        }
+
+        .car-card p {
+            padding: 0 15px 15px;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+            margin: 0;
+        }
+
+        .car-card .price-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .car-card .rental-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background-color: var(--rental-color);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .inventory-container, .rental-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .inventory-card, .rental-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease, transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .inventory-card:hover, .rental-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .inventory-header, .rental-header {
+            background: linear-gradient(135deg, var(--primary-color), #0056b3);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .rental-header {
+            background: linear-gradient(135deg, var(--rental-color), #1e7e34);
+        }
+
+        .inventory-header h3, .rental-header h3 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .inventory-content, .rental-content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .inventory-image, .rental-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .inventory-image:hover, .rental-image:hover {
+            transform: scale(1.02);
+        }
+
+        .inventory-details, .rental-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .detail-group {
+            margin-bottom: 12px;
+        }
+
+        .detail-group h4 {
+            margin: 0 0 6px 0;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .rental-details .detail-group h4 {
+            color: var(--rental-color);
+        }
+
+        .detail-group p {
+            margin: 0;
+            color: var(--text-color);
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            font-size: 0.9rem;
+        }
+
+        .specs-table th, .specs-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .specs-table th {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .specs-table tr:hover {
+            background-color: rgba(0,123,255,0.05);
+        }
+
+        .rental-price {
+            background-color: rgba(40, 167, 69, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .rental-price h4 {
+            color: var(--rental-color);
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .rental-price p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--rental-color);
+            margin: 5px 0;
+        }
+
+        .rental-price .per-day {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        .rating-stars {
+            color: #FFC107;
+            margin-right: 8px;
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 900px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.4s;
+        }
+
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 15px;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: var(--primary-color);
+        }
+
+        .modal-header {
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .modal-image {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .modal-image img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .modal-details {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .modal-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .modal-description {
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .search-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+            flex-wrap: wrap;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            width: 250px;
+            transition: all 0.3s ease, transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+            outline: none;
+        }
+
+        .filter-dropdown {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 0.9rem;
+            background-color: white;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease, transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+
+        .filter-dropdown:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+            outline: none;
+        }
+
+        .newsletter {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .newsletter-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .newsletter h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .newsletter p {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: none;
+            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .newsletter-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease, transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .newsletter-button:hover {
+            background-color: #e05a00;
+            transform: scale(1.05);
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 50px 20px 25px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            margin-bottom: 15px;
+        }
+
+        .footer-logo h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .footer-logo p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        .footer-links h3, .footer-resources h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: white;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-links h3::after, .footer-resources h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-links ul, .footer-resources ul {
+            list-style: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links li, .footer-resources li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a, .footer-resources a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover, .footer-resources a:hover {
+            color: white;
+        }
+
+        .footer-contact h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: white;
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .footer-contact h3::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .contact-info {
+            margin-bottom: 15px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info i {
+            margin-right: 8px;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .social-links a {
+            color: white;
+            background-color: rgba(255,255,255,0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease, transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+            font-size: 0.9rem;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 25px;
+            margin-top: 25px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 1024px) {
+            .car-card, .inventory-card, .rental-card {
+                flex: 1 1 calc(50% - 15px);
+            }
+            
+            .inventory-container, .rental-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+            
+            .modal-body {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .modal-image, .modal-details {
+                min-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            header p {
+                font-size: 1rem;
+            }
+            
+            nav a {
+                margin: 0 8px;
+                font-size: 0.85rem;
+                padding: 5px 8px;
+            }
+            
+            section {
+                padding: 30px 15px;
+                margin: 20px 15px;
+            }
+            
+            section h2 {
+                font-size: 1.8rem;
+            }
+            
+            .car-card, .inventory-card, .rental-card {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+            
+            .search-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .search-box, .filter-dropdown {
+                width: 100%;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-input, .newsletter-button {
+                width: 100%;
+            }
+            
+            .modal-content {
+                width: 90%;
+                padding: 20px;
+            }
+            
+            body {
+                padding-bottom: 550px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            
+            nav a {
+                margin: 0 5px;
+                font-size: 0.8rem;
+            }
+            
+            section h2 {
+                font-size: 1.5rem;
+            }
+            
+            .inventory-container, .rental-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Carozi</h1>
+        <p>Your Guide to Car Buying & Rental Recommendations</p>
+    </header>
+
+    <nav>
+        <a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a>
+        <a onclick="showSection('inventory')"><i class="fas fa-car"></i> Inventory</a>
+        <a onclick="showSection('rentals')"><i class="fas fa-key"></i> Rentals</a>
+        <a onclick="showSection('website-info')"><i class="fas fa-info-circle"></i> Website Info</a>
+    </nav>
+
+    <section id="home">
+        <h2>Welcome to Carozi</h2>
+        <p>
+            Carozi is your ultimate guide to finding and renting the perfect car for your needs. Whether you're buying or renting, looking for budget-friendly options or luxury vehicles, we've got you covered with expert recommendations and detailed information.
+        </p>
+
+        <h3>Featured Cars</h3>
+        <div class="featured-cars">
+            <div class="car-card" onclick="showSection('luxury-cars')">
+                <img src="LuxuryCar.png" alt="Luxury Car">
+                <div class="price-tag">From AED 450K</div>
+                <h4>Luxury Cars</h4>
+                <p>Premium brands for comfort, style, and advanced features.</p>
+            </div>
+            <div class="car-card" onclick="showSection('budget-cars')">
+                <img src="Budget.png" alt="Budget Car">
+                <div class="price-tag">From AED 80K</div>
+                <h4>Budget-Friendly Cars</h4>
+                <p>Affordable and reliable options for cost-conscious buyers.</p>
+            </div>
+            <div class="car-card" onclick="showSection('sporty-cars')">
+                <img src="Sport.png" alt="Sporty Car">
+                <div class="price-tag">From AED 400K</div>
+                <h4>Sporty Cars</h4>
+                <p>High-performance vehicles for thrill-seekers.</p>
+            </div>
+            <div class="car-card" onclick="showSection('offroad-cars')">
+                <img src="Offroad.png" alt="Offroad Car">
+                <div class="price-tag">From AED 120K</div>
+                <h4>Offroad Cars</h4>
+                <p>Rugged and durable vehicles for adventurous terrains.</p>
+            </div>
+            <div class="car-card" onclick="showSection('very-low-budget-cars')">
+                <img src="VeryLowBudget.png" alt="Very Low Budget Car">
+                <div class="price-tag">Under AED 60K</div>
+                <h4>Very Low Budget Cars</h4>
+                <p>Extremely affordable options for tight budgets.</p>
+            </div>
+        </div>
+
+        <h3>Cars by Country</h3>
+        <div class="featured-cars">
+            <div class="car-card" onclick="showCountryInfo('japanese')">
+                <img src="Japanese.png" alt="Japanese Cars">
+                <h4>Japanese Cars</h4>
+                <p>Reliable and efficient vehicles from Japan.</p>
+            </div>
+            <div class="car-card" onclick="showCountryInfo('american')">
+                <img src="American.png" alt="American Cars">
+                <h4>American Cars</h4>
+                <p>Powerful and iconic vehicles from the USA.</p>
+            </div>
+            <div class="car-card" onclick="showCountryInfo('german')">
+                <img src="German.png" alt="German Cars">
+                <h4>German Cars</h4>
+                <p>Luxurious and high-performance vehicles from Germany.</p>
+            </div>
+            <div class="car-card" onclick="showCountryInfo('korean')">
+                <img src="Korean.png" alt="Korean Cars">
+                <h4>Korean Cars</h4>
+                <p>Stylish and feature-packed vehicles from Korea.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="inventory">
+        <h2>Car Inventory</h2>
+        <p>Browse our comprehensive inventory of vehicles with detailed specifications and features. Click any car image for detailed view.</p>
+        
+        <div class="search-filter">
+            <input type="text" class="search-box" placeholder="Search cars by name..." onkeyup="filterInventory()">
+            <select class="filter-dropdown" onchange="filterInventory()">
+                <option value="all">All Categories</option>
+                <option value="luxury">Luxury</option>
+                <option value="budget">Budget</option>
+                <option value="sport">Sport</option>
+                <option value="offroad">Offroad</option>
+                <option value="electric">Electric</option>
+                <option value="hybrid">Hybrid</option>
+                <option value="japanese">Japanese</option>
+                <option value="american">American</option>
+                <option value="german">German</option>
+                <option value="korean">Korean</option>
+            </select>
+            <select class="filter-dropdown" onchange="filterInventory()">
+                <option value="all">All Price Ranges</option>
+                <option value="low">Under AED 100,000</option>
+                <option value="medium">AED 100,000 - 250,000</option>
+                <option value="high">AED 250,000 - 500,000</option>
+                <option value="premium">Over AED 500,000</option>
+            </select>
+        </div>
+        
+        <div class="inventory-container" id="inventory-container">
+        </div>
+    </section>
+
+    <section id="rentals">
+        <h2>Car Rentals</h2>
+        <p>Explore our selection of premium rental vehicles available for your next adventure. All prices are in AED (DHS). Click any car image for detailed view.</p>
+        
+        <div class="search-filter">
+            <input type="text" class="search-box" placeholder="Search rental cars..." onkeyup="filterRentals()">
+            <select class="filter-dropdown" onchange="filterRentals()">
+                <option value="all">All Categories</option>
+                <option value="luxury">Luxury</option>
+                <option value="suv">SUV</option>
+                <option value="sports">Sports</option>
+                <option value="economy">Economy</option>
+                <option value="electric">Electric</option>
+                <option value="convertible">Convertible</option>
+                <option value="family">Family</option>
+            </select>
+            <select class="filter-dropdown" onchange="filterRentals()">
+                <option value="all">All Price Ranges</option>
+                <option value="low">Under 300 AED/day</option>
+                <option value="medium">300 - 800 AED/day</option>
+                <option value="high">800 - 2000 AED/day</option>
+                <option value="premium">Over 2000 AED/day</option>
+            </select>
+        </div>
+        
+        <div class="rental-container" id="rental-container">
+        </div>
+    </section>
+
+    <section id="website-info">
+        <h2>Website Info</h2>
+        
+        <h3>Student Information</h3>
+        <p><strong>Name:</strong> Muhammad Hayan Butt</p>
+        <p><strong>Student ID:</strong> 35170865</p>
+
+        <h3>Project Description</h3>
+        <p>
+            "Carozi" is a complete website that delivers trustworthy automotive information to assist buyers in purchasing decisions. The platform connects vehicle buyers with precise automotive details, serving novice drivers, automotive enthusiasts, and luxury and high-performance car enthusiasts. "Carozi" is a single destination website providing complete car-related information through detailed guides and reviews to help users make better car choices.
+        </p>
+        <p>
+            "Carozi" exists to provide users with comprehensive car education that covers first-time buyer guidance alongside affordable and reliable options, luxury vehicles, high-performance cars, and basic car maintenance knowledge. "Carozi" delivers objective reviews and helpful advice to make car-buying easier while enabling users to make well-informed choices. Users will find simple explanations about car components and mechanics on the platform, which will make information accessible to people with no prior knowledge. "Carozi" works to maintain transparency through its commitment to deliver accurate, unbiased information and presents itself in an easy-to-use format.
+        </p>
+        <p>
+            The "Carozi" platform serves multiple user groups, from novice buyers who need help making decisions through luxury car enthusiasts and beginner mechanics to regular buyers who want trustworthy car information. The platform is a valuable resource that provides industry trends and automotive developments to all interested users. "Carozi" strives to establish itself as a reliable resource that provides completely accessible information to both car buyers and enthusiasts.
+        </p>
+        <p>
+            "Carozi" is a platform that provides users with essential knowledge that helps them make educated choices regarding their car purchases. "Carozi" simplifies car buying through accurate information organisation, which enables users to discover vehicles that match their needs. The automotive space will recognise the platform as its symbol of trust and reliability, supporting informed, conscious car buyers across the community.
+        </p>
+
+        <h3>License</h3>
+        <p>
+            The "Carozi" website incorporates content under the Creative Commons Attribution-Non-commercial-No Derivatives 4.0 International License (CC BY-NC-ND 4.0). Users can view and share content from "Carozi" while downloading it for personal use without commercial intent, provided they give "Carozi" proper credit. The content remains accessible for personal and non-commercial use, but users cannot modify or use it commercially. Protection of originality for the work became possible through this license, which also supports the dissemination of valuable automotive information. The permit enables accurate educational content and personal use while blocking commercial activities and modifications to protect the original message aligning with "Carozi's" goal of service to car buyers.
+        </p>
+    </section>
+
+    <div class="newsletter">
+        <div class="newsletter-container">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Subscribe to our newsletter for the latest car maintenance tips, industry news, and community highlights.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                <button type="submit" class="newsletter-button">Subscribe</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">
+                <h2>CAROZI</h2>
+                <p>Your trusted source for car knowledge, repairs, and community support.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a onclick="showSection('home')">Home</a></li>
+                    <li><a onclick="showSection('inventory')">Inventory</a></li>
+                    <li><a onclick="showSection('rentals')">Rentals</a></li>
+                    <li><a href="#">Forum</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a onclick="showSection('website-info')">About</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-resources">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Repair Guides</a></li>
+                    <li><a href="#">Maintenance Schedules</a></li>
+                    <li><a href="#">Recall Information</a></li>
+                    <li><a href="#">Troubleshooting</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contact</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-map-marker-alt"></i> Dubai</p>
+                    <p><i class="fas fa-phone"></i> (971) 123456789 </p>
+                    <p><i class="fas fa-envelope"></i> info@carozi.com</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2025 CAROZI. This work is licensed under a Creative Commons Attribution-ShareAlike 4.0 International License.</p>
+        </div>
+    </footer>
+
+    <div id="carModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalCarTitle"></h2>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalCarImage" src="" alt="">
+                </div>
+                <div class="modal-details">
+                    <div class="modal-price" id="modalCarPrice"></div>
+                    <div class="modal-description" id="modalCarDescription"></div>
+                    <table class="specs-table" id="modalCarSpecs"></table>
+                    <div id="modalCarFeatures"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const carInventory = [
+            {
+                id: 1,
+                name: "Mercedes-Benz S-Class",
+                category: "luxury",
+                country: "german",
+                price: "premium",
+                image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 450,000 - 600,000",
+                engine: "3.0L Turbo I6 / 4.0L Turbo V8",
+                horsepower: "362 - 496 HP",
+                torque: "369 - 516 lb-ft",
+                acceleration: "4.5 - 5.5s (0-100km/h)",
+                topSpeed: "210 - 250 km/h",
+                fuelEconomy: "8.5 - 10.5 L/100km",
+                transmission: "9-speed automatic",
+                drivetrain: "RWD / AWD",
+                seating: "5",
+                features: "Air suspension, MBUX infotainment, Night Vision, Burmester 3D sound, Energizing Comfort, 360° camera, Distronic Plus, Massage seats",
+                comfort: "10/10",
+                performance: "9/10",
+                safety: "10/10",
+                technology: "10/10",
+                description: "The Mercedes-Benz S-Class represents the pinnacle of automotive luxury, offering unparalleled comfort, cutting-edge technology, and refined performance. As the flagship model, it sets the standard for premium sedans worldwide with its exquisite craftsmanship and innovative features."
+            },
+            {
+                id: 2,
+                name: "Toyota Corolla",
+                category: "budget",
+                country: "japanese",
+                price: "low",
+                image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 80,000 - 100,000",
+                engine: "2.0L 4-cylinder",
+                horsepower: "169 HP",
+                torque: "151 lb-ft",
+                acceleration: "9.1s (0-100km/h)",
+                topSpeed: "195 km/h",
+                fuelEconomy: "5.5 - 6.8 L/100km",
+                transmission: "CVT automatic",
+                drivetrain: "FWD",
+                seating: "5",
+                features: "Toyota Safety Sense 2.0, Apple CarPlay/Android Auto, LED lighting, Lane Tracing Assist, Adaptive Cruise Control, Pre-Collision System, 7 airbags",
+                comfort: "7/10",
+                performance: "6/10",
+                safety: "9/10",
+                technology: "7/10",
+                description: "The Toyota Corolla is one of the best-selling cars globally, known for its reliability, fuel efficiency, and affordability. The latest generation offers a comfortable ride, modern safety features, and improved technology while maintaining Toyota's renowned durability."
+            },
+            {
+                id: 3,
+                name: "Porsche 911 Carrera S",
+                category: "sport",
+                country: "german",
+                price: "premium",
+                image: "https://images.unsplash.com/photo-1494972308805-463bc619d34e?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 550,000 - 750,000",
+                engine: "3.0L Turbo Flat-6",
+                horsepower: "443 HP",
+                torque: "390 lb-ft",
+                acceleration: "3.5s (0-100km/h)",
+                topSpeed: "308 km/h",
+                fuelEconomy: "9.0 - 10.5 L/100km",
+                transmission: "8-speed PDK / 7-speed manual",
+                drivetrain: "RWD / AWD",
+                seating: "4 (2+2)",
+                features: "Porsche Active Suspension, Sport Chrono, Torque Vectoring, Ceramic Brakes, 10.9-inch PCM, Bose Audio, 18-way seats, Night Vision, PDLS+ lights",
+                comfort: "8/10",
+                performance: "10/10",
+                safety: "9/10",
+                technology: "9/10",
+                description: "The Porsche 911 Carrera S blends everyday usability with track-ready performance. With its iconic design and rear-engine layout, it delivers an exhilarating driving experience while maintaining Porsche's renowned build quality and precision engineering."
+            },
+            {
+                id: 4,
+                name: "Jeep Wrangler Rubicon",
+                category: "offroad",
+                country: "american",
+                price: "medium",
+                image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 220,000 - 280,000",
+                engine: "3.6L V6 / 2.0L Turbo I4",
+                horsepower: "285 HP / 270 HP",
+                torque: "260 lb-ft / 295 lb-ft",
+                acceleration: "7.5s (0-100km/h)",
+                topSpeed: "180 km/h",
+                fuelEconomy: "11.5 - 13.5 L/100km",
+                transmission: "8-speed auto / 6-speed manual",
+                drivetrain: "4WD",
+                seating: "4-5",
+                features: "Rock-Trac 4x4, Tru-Lok diffs, Sway bar disconnect, Off-Road+, Removable roof/doors, 33\" tires, Steel bumpers, Winch-ready, Uconnect 4C NAV",
+                comfort: "6/10",
+                performance: "7/10",
+                safety: "7/10",
+                technology: "7/10",
+                description: "The Jeep Wrangler Rubicon is the ultimate off-road vehicle with legendary capability. Its rugged construction, solid axles, and numerous off-road features make it perfect for desert adventures while offering open-air freedom."
+            },
+            {
+                id: 5,
+                name: "Tesla Model 3 Performance",
+                category: "electric",
+                country: "american",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 280,000 - 320,000",
+                engine: "Dual Motor AWD",
+                horsepower: "450 HP",
+                torque: "471 lb-ft",
+                acceleration: "3.1s (0-100km/h)",
+                topSpeed: "261 km/h",
+                range: "547 km (WLTP)",
+                charging: "250 kW Supercharging",
+                transmission: "Single-speed fixed gear",
+                drivetrain: "AWD",
+                seating: "5",
+                features: "Autopilot, 15\" touchscreen, Premium audio, Glass roof, Wireless charging, Sentry Mode, Dog Mode, 20\" wheels, Track Mode",
+                comfort: "8/10",
+                performance: "10/10",
+                safety: "10/10",
+                technology: "10/10",
+                description: "The Tesla Model 3 Performance combines supercar acceleration with everyday practicality. With instant torque, zero emissions, and advanced Autopilot features, it represents the cutting edge of electric vehicle technology."
+            },
+            {
+                id: 6,
+                name: "Toyota Land Cruiser",
+                category: "offroad",
+                country: "japanese",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 350,000 - 450,000",
+                engine: "4.0L V6 / 4.5L V8 Diesel",
+                horsepower: "271 HP / 232 HP",
+                torque: "293 lb-ft / 430 lb-ft",
+                acceleration: "8.6s (0-100km/h)",
+                topSpeed: "210 km/h",
+                fuelEconomy: "10.5 - 12.5 L/100km",
+                transmission: "6-speed automatic",
+                drivetrain: "4WD",
+                seating: "7-8",
+                features: "KDSS suspension, Multi-Terrain Select, Crawl Control, 360° camera, 14-speaker JBL, Cooled seats, Rear entertainment, Multi-Terrain Monitor",
+                comfort: "9/10",
+                performance: "8/10",
+                safety: "9/10",
+                technology: "8/10",
+                description: "The Toyota Land Cruiser is legendary for its durability and off-road capability while offering luxurious comfort. Ideal for Middle East conditions, it combines ruggedness with refinement for both city and desert driving."
+            },
+            {
+                id: 7,
+                name: "BMW 530e M Sport",
+                category: "luxury",
+                country: "german",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 320,000 - 380,000",
+                engine: "2.0L Turbo I4 + Electric",
+                horsepower: "292 HP",
+                torque: "310 lb-ft",
+                acceleration: "5.9s (0-100km/h)",
+                topSpeed: "235 km/h",
+                fuelEconomy: "2.3 - 2.8 L/100km",
+                electricRange: "57 km",
+                transmission: "8-speed automatic",
+                drivetrain: "RWD",
+                seating: "5",
+                features: "Live Cockpit Pro, Laserlights, M Sport package, Harman Kardon, Gesture Control, Parking Assistant, Driving Assistant Professional",
+                comfort: "9/10",
+                performance: "8/10",
+                safety: "9/10",
+                technology: "9/10",
+                description: "The BMW 530e M Sport combines luxury sedan refinement with plug-in hybrid efficiency. Offering both electric driving and powerful performance, it delivers upscale comfort with cutting-edge technology and sporty handling."
+            },
+            {
+                id: 8,
+                name: "Hyundai Tucson Hybrid",
+                category: "hybrid",
+                country: "korean",
+                price: "medium",
+                image: "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 140,000 - 170,000",
+                engine: "1.6L Turbo I4 + Electric",
+                horsepower: "227 HP",
+                torque: "258 lb-ft",
+                acceleration: "8.0s (0-100km/h)",
+                topSpeed: "195 km/h",
+                fuelEconomy: "5.5 - 6.5 L/100km",
+                transmission: "6-speed automatic",
+                drivetrain: "AWD",
+                seating: "5",
+                features: "10.25\" touchscreen, Digital cluster, SmartSense safety, Ventilated seats, Panoramic sunroof, Blind View Monitor, Remote Smart Parking",
+                comfort: "8/10",
+                performance: "7/10",
+                safety: "9/10",
+                technology: "8/10",
+                description: "The Hyundai Tucson Hybrid offers stylish design, advanced technology, and excellent value in the midsize SUV segment. With its spacious interior, comprehensive safety features, and hybrid efficiency, it's a compelling family SUV."
+            },
+            {
+                id: 9,
+                name: "Nissan Patrol Platinum",
+                category: "luxury",
+                country: "japanese",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 380,000 - 450,000",
+                engine: "5.6L V8",
+                horsepower: "400 HP",
+                torque: "413 lb-ft",
+                acceleration: "6.5s (0-100km/h)",
+                topSpeed: "210 km/h",
+                fuelEconomy: "14.5 - 16.5 L/100km",
+                transmission: "7-speed automatic",
+                drivetrain: "4WD",
+                seating: "7-8",
+                features: "Hydraulic Body Motion Control, Intelligent Around View Monitor, ProPILOT Assist, 13-speaker Bose sound system, Semi-aniline leather",
+                comfort: "9/10",
+                performance: "8/10",
+                safety: "9/10",
+                technology: "8/10",
+                description: "The Nissan Patrol Platinum is a Middle East favorite, offering V8 power and luxurious comfort. Perfect for family trips or desert adventures. Includes free child seats and unlimited mileage."
+            },
+            {
+                id: 10,
+                name: "Kia EV6 GT-Line",
+                category: "electric",
+                country: "korean",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?auto=format&fit=crop&w=800&q=80",
+                priceRange: "AED 250,000 - 290,000",
+                engine: "Dual Motor AWD",
+                horsepower: "325 HP",
+                torque: "446 lb-ft",
+                acceleration: "5.1s (0-100km/h)",
+                topSpeed: "185 km/h",
+                range: "506 km (WLTP)",
+                charging: "350 kW Ultra Fast",
+                transmission: "Single-speed fixed gear",
+                drivetrain: "AWD",
+                seating: "5",
+                features: "12.3\" curved displays, Augmented Reality HUD, Meridian audio, Vehicle-to-Load, Solar roof, Highway Driving Assist, Remote Smart Parking",
+                comfort: "8/10",
+                performance: "8/10",
+                safety: "9/10",
+                technology: "9/10",
+                description: "The Kia EV6 GT-Line represents the cutting edge of electric vehicle technology with its ultra-fast charging capability, futuristic design, and innovative features. It offers a perfect blend of performance, range, and technology."
+            }
+        ];
+
+        const rentalCars = [
+            {
+                id: 101,
+                name: "Mercedes-Benz S-Class",
+                category: "luxury",
+                price: "premium",
+                image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 2500,
+                weeklyDiscount: 0.15,
+                monthlyDiscount: 0.25,
+                engine: "3.0L Turbo I6 / 4.0L Turbo V8",
+                horsepower: "362 - 496 HP",
+                features: "Air suspension, MBUX infotainment, Night Vision, Burmester 3D sound, Energizing Comfort, 360° camera, Distronic Plus, Massage seats",
+                description: "Experience ultimate luxury with the Mercedes-Benz S-Class rental. Perfect for business executives or special occasions where comfort and prestige matter. Includes free delivery in Dubai and concierge service."
+            },
+            {
+                id: 102,
+                name: "Toyota Corolla",
+                category: "economy",
+                price: "low",
+                image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 200,
+                weeklyDiscount: 0.10,
+                monthlyDiscount: 0.20,
+                engine: "2.0L 4-cylinder",
+                horsepower: "169 HP",
+                features: "Toyota Safety Sense 2.0, Apple CarPlay/Android Auto, LED lighting, Lane Tracing Assist, Adaptive Cruise Control, Pre-Collision System",
+                description: "The reliable Toyota Corolla is perfect for daily commuting and city driving. Excellent fuel efficiency and modern safety features make it a practical choice. Includes basic insurance and 24/7 roadside assistance."
+            },
+            {
+                id: 103,
+                name: "Porsche 911 Carrera S",
+                category: "sports",
+                price: "premium",
+                image: "https://images.unsplash.com/photo-1494972308805-463bc619d34e?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 3500,
+                weeklyDiscount: 0.10,
+                monthlyDiscount: 0.20,
+                engine: "3.0L Turbo Flat-6",
+                horsepower: "443 HP",
+                features: "Porsche Active Suspension, Sport Chrono, Torque Vectoring, Ceramic Brakes, 10.9-inch PCM, Bose Audio, 18-way seats, Night Vision",
+                description: "Drive the legendary Porsche 911 Carrera S for an unforgettable experience. Perfect for car enthusiasts or special occasions where performance matters. Includes 500km daily mileage allowance and premium insurance coverage."
+            },
+            {
+                id: 104,
+                name: "Jeep Wrangler Rubicon",
+                category: "suv",
+                price: "medium",
+                image: "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 600,
+                weeklyDiscount: 0.15,
+                monthlyDiscount: 0.25,
+                engine: "3.6L V6 / 2.0L Turbo I4",
+                horsepower: "285 HP / 270 HP",
+                features: "Rock-Trac 4x4, Tru-Lok diffs, Sway bar disconnect, Off-Road+, Removable roof/doors, 33\" tires, Steel bumpers, Uconnect 4C NAV",
+                description: "Explore Dubai's deserts in style with the iconic Jeep Wrangler Rubicon. Its off-road capabilities and open-air freedom make it perfect for adventures. Includes desert driving kit and recovery equipment."
+            },
+            {
+                id: 105,
+                name: "Range Rover Sport",
+                category: "luxury",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 1800,
+                weeklyDiscount: 0.15,
+                monthlyDiscount: 0.25,
+                engine: "3.0L Turbo I6 / 5.0L Supercharged V8",
+                horsepower: "355 - 518 HP",
+                features: "Terrain Response 2, All-Terrain Progress Control, Adaptive Dynamics, Meridian Sound System, 360° camera, Cooled seats, Head-up Display",
+                description: "The Range Rover Sport combines British luxury with capability, perfect for both city driving and desert excursions. Includes VIP concierge service and complimentary car wash twice weekly."
+            },
+            {
+                id: 106,
+                name: "Nissan Patrol Platinum",
+                category: "suv",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 800,
+                weeklyDiscount: 0.15,
+                monthlyDiscount: 0.25,
+                engine: "5.6L V8",
+                horsepower: "400 HP",
+                features: "Hydraulic Body Motion Control, Intelligent Around View Monitor, ProPILOT Assist, 13-speaker Bose sound system, Semi-aniline leather",
+                description: "The Nissan Patrol Platinum is a Middle East favorite, offering V8 power and luxurious comfort. Perfect for family trips or desert adventures. Includes free child seats and unlimited mileage."
+            },
+            {
+                id: 107,
+                name: "Tesla Model 3 Performance",
+                category: "electric",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 1200,
+                weeklyDiscount: 0.10,
+                monthlyDiscount: 0.20,
+                engine: "Dual Motor AWD",
+                horsepower: "450 HP",
+                features: "Autopilot, 15\" touchscreen, Premium audio, Glass roof, Wireless charging, Sentry Mode, Dog Mode, 20\" wheels, Track Mode",
+                description: "Experience cutting-edge electric vehicle technology with the Tesla Model 3 Performance. Includes free Supercharging and premium connectivity package for the rental duration."
+            },
+            {
+                id: 108,
+                name: "BMW 530e M Sport",
+                category: "luxury",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 1500,
+                weeklyDiscount: 0.15,
+                monthlyDiscount: 0.25,
+                engine: "2.0L Turbo I4 + Electric",
+                horsepower: "292 HP",
+                features: "Live Cockpit Pro, Laserlights, M Sport package, Harman Kardon, Gesture Control, Parking Assistant, Driving Assistant Professional",
+                description: "The BMW 530e M Sport combines luxury sedan refinement with plug-in hybrid efficiency. Perfect for business travelers. Includes free charging at partner locations."
+            },
+            {
+                id: 109,
+                name: "Ford Mustang GT Convertible",
+                category: "sports",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 1300,
+                weeklyDiscount: 0.10,
+                monthlyDiscount: 0.20,
+                engine: "5.0L V8",
+                horsepower: "450 HP",
+                features: "MagneRide damping, Active exhaust, 12\" digital cluster, B&O audio, Heated/cooled seats, SYNC 4, Safe & Smart package",
+                description: "Enjoy Dubai's sunny weather in the Ford Mustang GT Convertible. With its powerful V8 and open-top freedom, it's perfect for coastal drives. Includes complimentary car detailing."
+            },
+            {
+                id: 110,
+                name: "Hyundai Tucson Hybrid",
+                category: "hybrid",
+                price: "medium",
+                image: "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 350,
+                weeklyDiscount: 0.10,
+                monthlyDiscount: 0.20,
+                engine: "1.6L Turbo I4 + Electric",
+                horsepower: "227 HP",
+                features: "10.25\" touchscreen, Digital cluster, SmartSense safety, Ventilated seats, Panoramic sunroof, Blind View Monitor, Remote Smart Parking",
+                description: "The Hyundai Tucson Hybrid offers stylish design and excellent fuel efficiency. Perfect for families exploring the UAE. Includes free additional driver and baby seats if needed."
+            },
+            {
+                id: 111,
+                name: "Chevrolet Camaro SS",
+                category: "sports",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 1400,
+                weeklyDiscount: 0.10,
+                monthlyDiscount: 0.20,
+                engine: "6.2L V8",
+                horsepower: "455 HP",
+                features: "Magnetic Ride Control, Dual-mode exhaust, Head-up Display, Bose audio, Leather seats, 8\" touchscreen, Performance Traction Management",
+                description: "The Chevrolet Camaro SS delivers classic American muscle car performance with modern technology. Perfect for those who want to make a statement. Includes free photo shoot with the car."
+            },
+            {
+                id: 112,
+                name: "Kia EV6 GT-Line",
+                category: "electric",
+                price: "high",
+                image: "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?auto=format&fit=crop&w=800&q=80",
+                dailyPrice: 1100,
+                weeklyDiscount: 0.10,
+                monthlyDiscount: 0.20,
+                engine: "Dual Motor AWD",
+                horsepower: "325 HP",
+                features: "12.3\" curved displays, Augmented Reality HUD, Meridian audio, Vehicle-to-Load, Solar roof, Highway Driving Assist, Remote Smart Parking",
+                description: "The Kia EV6 GT-Line represents the cutting edge of electric vehicle technology with ultra-fast charging and futuristic design. Includes free charging at all UAE DEWA stations."
+            }
+        ];
+
+        const modal = document.getElementById("carModal");
+        const modalTitle = document.getElementById("modalCarTitle");
+        const modalImage = document.getElementById("modalCarImage");
+        const modalPrice = document.getElementById("modalCarPrice");
+        const modalDescription = document.getElementById("modalCarDescription");
+        const modalSpecs = document.getElementById("modalCarSpecs");
+        const modalFeatures = document.getElementById("modalCarFeatures");
+        const closeBtn = document.getElementsByClassName("close")[0];
+
+        function showCountryInfo(country) {
+            const countryInfo = {
+                japanese: {
+                    title: "Japanese Cars",
+                    description: "Japanese cars are renowned for their reliability, fuel efficiency, and innovative technology. Brands like Toyota, Honda, and Nissan dominate global markets with their durable vehicles that require minimal maintenance.",
+                    image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?auto=format&fit=crop&w=800&q=80",
+                    features: "Known for reliability, fuel efficiency, advanced technology, and high resale value. Popular models include Toyota Corolla, Honda Civic, and Nissan Patrol."
+                },
+                american: {
+                    title: "American Cars",
+                    description: "American vehicles are known for their powerful engines, spacious interiors, and bold designs. From muscle cars to full-size SUVs, American brands like Ford, Chevrolet, and Tesla offer a wide range of vehicles.",
+                    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80",
+                    features: "Famous for powerful engines, spacious interiors, and bold designs. Iconic models include Ford Mustang, Chevrolet Corvette, and Tesla Model S."
+                },
+                german: {
+                    title: "German Cars",
+                    description: "German engineering is synonymous with precision, performance, and luxury. Brands like Mercedes-Benz, BMW, and Audi are leaders in automotive innovation, offering vehicles with exceptional build quality and driving dynamics.",
+                    image: "https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?auto=format&fit=crop&w=800&q=80",
+                    features: "Renowned for precision engineering, luxury, and performance. Leading brands include Mercedes-Benz, BMW, and Audi with models like S-Class, 5 Series, and A8."
+                },
+                korean: {
+                    title: "Korean Cars",
+                    description: "Korean automakers like Hyundai and Kia have gained global recognition for offering feature-packed vehicles with excellent warranties at competitive prices. Their designs have become increasingly sophisticated in recent years.",
+                    image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=800&q=80",
+                    features: "Offer excellent value with long warranties, modern designs, and advanced features. Popular models include Hyundai Tucson, Kia Sorento, and Genesis G80."
+                }
+            };
+
+            modalTitle.textContent = countryInfo[country].title;
+            modalImage.src = countryInfo[country].image;
+            modalPrice.innerHTML = `<p><strong>Country:</strong> ${countryInfo[country].title}</p>`;
+            modalDescription.textContent = countryInfo[country].description;
+            
+            modalSpecs.innerHTML = '';
+            
+            const addSpecRow = (label, value) => {
+                const row = modalSpecs.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                cell1.textContent = label;
+                cell2.textContent = value;
+            };
+            
+            addSpecRow('Key Characteristics', countryInfo[country].features);
+            
+            modalFeatures.innerHTML = `
+                <h3 style="margin-top: 20px;">Popular Models in Our Inventory</h3>
+                <p>${getCountryCars(country).join(', ')}</p>
+            `;
+            
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+
+        function getCountryCars(country) {
+            return carInventory
+                .filter(car => car.country === country)
+                .map(car => car.name)
+                .slice(0, 5);
+        }
+
+        function showCarDetails(car, isRental = false) {
+            modalTitle.textContent = car.name;
+            modalImage.src = car.image;
+            modalImage.alt = car.name;
+            
+            if (isRental) {
+                const weeklyPrice = Math.round(car.dailyPrice * 7 * (1 - car.weeklyDiscount));
+                const monthlyPrice = Math.round(car.dailyPrice * 30 * (1 - car.monthlyDiscount));
+                
+                modalPrice.innerHTML = `
+                    <p><strong>Daily:</strong> ${car.dailyPrice.toLocaleString()} AED</p>
+                    <p><strong>Weekly:</strong> ${weeklyPrice.toLocaleString()} AED (save ${Math.round(car.weeklyDiscount * 100)}%)</p>
+                    <p><strong>Monthly:</strong> ${monthlyPrice.toLocaleString()} AED (save ${Math.round(car.monthlyDiscount * 100)}%)</p>
+                `;
+            } else {
+                modalPrice.textContent = `Price Range: ${car.priceRange}`;
+            }
+            
+            modalDescription.textContent = car.description;
+            
+            modalSpecs.innerHTML = '';
+            
+            const addSpecRow = (label, value) => {
+                const row = modalSpecs.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                cell1.textContent = label;
+                cell2.textContent = value;
+            };
+            
+            addSpecRow('Category', car.category.charAt(0).toUpperCase() + car.category.slice(1));
+            addSpecRow('Engine', car.engine);
+            addSpecRow('Horsepower', car.horsepower);
+            
+            if (car.torque) addSpecRow('Torque', car.torque);
+            if (car.acceleration) addSpecRow('Acceleration (0-100km/h)', car.acceleration);
+            if (car.topSpeed) addSpecRow('Top Speed', car.topSpeed);
+            if (car.fuelEconomy) addSpecRow('Fuel Economy', car.fuelEconomy);
+            if (car.range) addSpecRow('Electric Range', car.range);
+            if (car.charging) addSpecRow('Max Charging Speed', car.charging);
+            if (car.transmission) addSpecRow('Transmission', car.transmission);
+            if (car.drivetrain) addSpecRow('Drivetrain', car.drivetrain);
+            if (car.seating) addSpecRow('Seating', car.seating);
+            
+            modalFeatures.innerHTML = `
+                <h3 style="margin-top: 20px;">Key Features</h3>
+                <p>${car.features}</p>
+            `;
+            
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+                document.body.style.overflow = "auto";
+            }
+        }
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+                
+                if (sectionId === 'inventory') {
+                    populateInventory();
+                }
+                
+                if (sectionId === 'rentals') {
+                    populateRentals();
+                }
+            }
+            
+            window.scrollTo({ behavior: "smooth",
+                top: selectedSection.offsetTop - 20,
+                behavior: 'smooth'
+            });
+        }
+
+        function populateInventory(filteredCars = null) {
+            const container = document.getElementById('inventory-container');
+            container.innerHTML = '';
+            
+            const carsToDisplay = filteredCars || carInventory;
+            
+            if (carsToDisplay.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-size: 1rem; color: var(--text-light);">No cars match your search criteria. Please try different filters.</p>';
+                return;
+            }
+            
+            carsToDisplay.forEach(car => {
+                const card = document.createElement('div');
+                card.className = 'inventory-card';
+                card.innerHTML = `
+                    <div class="inventory-header">
+                        <h3>${car.name}</h3>
+                    </div>
+                    <div class="inventory-content">
+                        
+                        <p>${car.description}</p>
+                        
+                        <div class="inventory-details">
+                            <div class="detail-group">
+                                <h4>Price Range</h4>
+                                <p>${car.priceRange}</p>
+                            </div>
+                            <div class="detail-group">
+                                <h4>Engine</h4>
+                                <p>${car.engine}</p>
+                            </div>
+                            <div class="detail-group">
+                                <h4>Horsepower</h4>
+                                <p>${car.horsepower}</p>
+                            </div>
+                        </div>
+                        
+                        <table class="specs-table">
+                            <tr>
+                                <th>Category</th>
+                                <td>${car.category.charAt(0).toUpperCase() + car.category.slice(1)}</td>
+                            </tr>
+                            <tr>
+                                <th>Country</th>
+                                <td>${car.country.charAt(0).toUpperCase() + car.country.slice(1)}</td>
+                            </tr>
+                            <tr>
+                                <th>Acceleration</th>
+                                <td>${car.acceleration}</td>
+                            </tr>
+                            <tr>
+                                <th>Top Speed</th>
+                                <td>${car.topSpeed}</td>
+                            </tr>
+                        </table>
+                    </div>
+                `;
+                
+                card.addEventListener('click', function() {
+                    showCarDetails(car);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        function populateRentals(filteredCars = null) {
+            const container = document.getElementById('rental-container');
+            container.innerHTML = '';
+            
+            const carsToDisplay = filteredCars || rentalCars;
+            
+            if (carsToDisplay.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-size: 1rem; color: var(--text-light);">No rental cars match your search criteria. Please try different filters.</p>';
+                return;
+            }
+            
+            carsToDisplay.forEach(car => {
+                const weeklyPrice = Math.round(car.dailyPrice * 7 * (1 - car.weeklyDiscount));
+                const monthlyPrice = Math.round(car.dailyPrice * 30 * (1 - car.monthlyDiscount));
+                
+                const card = document.createElement('div');
+                card.className = 'rental-card';
+                card.innerHTML = `
+                    <div class="rental-header">
+                        <h3>${car.name}</h3>
+                    </div>
+                    <div class="rental-content">
+                        
+                        <p>${car.description}</p>
+                        
+                        <div class="rental-details">
+                            <div class="detail-group">
+                                <h4>Engine</h4>
+                                <p>${car.engine}</p>
+                            </div>
+                            <div class="detail-group">
+                                <h4>Horsepower</h4>
+                                <p>${car.horsepower}</p>
+                            </div>
+                            <div class="detail-group">
+                                <h4>Category</h4>
+                                <p>${car.category.charAt(0).toUpperCase() + car.category.slice(1)}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="rental-price">
+                            <h4>Rental Prices (AED)</h4>
+                            <p>${car.dailyPrice.toLocaleString()} <span class="per-day">per day</span></p>
+                            <p>${weeklyPrice.toLocaleString()} <span class="per-day">per week (save ${Math.round(car.weeklyDiscount * 100)}%)</span></p>
+                            <p>${monthlyPrice.toLocaleString()} <span class="per-day">per month (save ${Math.round(car.monthlyDiscount * 100)}%)</span></p>
+                        </div>
+                    </div>
+                `;
+                
+                card.addEventListener('click', function() {
+                    showCarDetails(car, true);
+                });
+                
+                container.appendChild(card);
+            });
+        }
+
+        function filterInventory() {
+            const searchTerm = document.querySelector('#inventory .search-box').value.toLowerCase();
+            const categoryFilter = document.querySelectorAll('#inventory .filter-dropdown')[0].value;
+            const priceFilter = document.querySelectorAll('#inventory .filter-dropdown')[1].value;
+            
+            const filteredCars = carInventory.filter(car => {
+                const matchesSearch = car.name.toLowerCase().includes(searchTerm);
+                const matchesCategory = categoryFilter === 'all' || car.category === categoryFilter || car.country === categoryFilter;
+                
+                let matchesPrice = true;
+                if (priceFilter !== 'all') {
+                    const priceRange = car.priceRange.match(/\d+/g);
+                    const minPrice = priceRange ? parseInt(priceRange[0].replace(/,/g, '')) : 0;
+                    
+                    if (priceFilter === 'low') matchesPrice = minPrice < 100000;
+                    if (priceFilter === 'medium') matchesPrice = minPrice >= 100000 && minPrice < 250000;
+                    if (priceFilter === 'high') matchesPrice = minPrice >= 250000 && minPrice < 500000;
+                    if (priceFilter === 'premium') matchesPrice = minPrice >= 500000;
+                }
+                
+                return matchesSearch && matchesCategory && matchesPrice;
+            });
+            
+            populateInventory(filteredCars);
+        }
+
+        function filterRentals() {
+            const searchTerm = document.querySelector('#rentals .search-box').value.toLowerCase();
+            const categoryFilter = document.querySelectorAll('#rentals .filter-dropdown')[0].value;
+            const priceFilter = document.querySelectorAll('#rentals .filter-dropdown')[1].value;
+            
+            const filteredCars = rentalCars.filter(car => {
+                const matchesSearch = car.name.toLowerCase().includes(searchTerm);
+                const matchesCategory = categoryFilter === 'all' || car.category === categoryFilter;
+                
+                let matchesPrice = true;
+                if (priceFilter !== 'all') {
+                    if (priceFilter === 'low') matchesPrice = car.dailyPrice < 300;
+                    if (priceFilter === 'medium') matchesPrice = car.dailyPrice >= 300 && car.dailyPrice < 800;
+                    if (priceFilter === 'high') matchesPrice = car.dailyPrice >= 800 && car.dailyPrice < 2000;
+                    if (priceFilter === 'premium') matchesPrice = car.dailyPrice >= 2000;
+                }
+                
+                return matchesSearch && matchesCategory && matchesPrice;
+            });
+            
+            populateRentals(filteredCars);
+        }
+
+        window.onload = function () {
+            showSection('home');
+        };
+    </script>
+
+</body>
+</html>
